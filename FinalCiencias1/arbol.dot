@@ -1,0 +1,11 @@
+graph G {nodo_resultado[label="Resultado  
+ 250"]
+nodo_1098896334[label=" - [ Multiplicacion ] - "]
+nodo_resultado--nodo_1098896334
+nodo_1162479828[label="ConstanteEntera  
+ Valor: 5"]
+nodo_1098896334--nodo_1162479828
+nodo_1839407912[label="ConstanteEntera  
+ Valor: 50"]
+nodo_1098896334--nodo_1839407912
+}

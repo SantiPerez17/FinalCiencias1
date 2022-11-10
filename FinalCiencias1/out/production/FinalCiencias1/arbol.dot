@@ -1,0 +1,11 @@
+graph G {nodo_resultado[label="Resultado  
+ 8"]
+nodo_1300109446[label=" - [ Suma ] - "]
+nodo_resultado--nodo_1300109446
+nodo_1020371697[label="ConstanteEntera  
+ Valor: 5"]
+nodo_1300109446--nodo_1020371697
+nodo_789451787[label="ConstanteEntera  
+ Valor: 3"]
+nodo_1300109446--nodo_789451787
+}
