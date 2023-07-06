@@ -1,5 +1,5 @@
 # FinalCiencias1
 
 
-carpeta del final
+# Carpeta del final de la materia.
 calculadora con ER y GLC para validaciones, y para muestra graphviz.
