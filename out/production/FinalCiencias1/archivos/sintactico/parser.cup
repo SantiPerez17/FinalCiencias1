@@ -1,0 +1,143 @@
+package archivos.sintactico;
+import archivos.ast.Base.Expresiones.Constantes.ConstanteEntera;
+import archivos.ast.Base.Expresiones.Constantes.ConstanteFloat;
+import archivos.ast.Base.Expresiones.Expresion;
+import archivos.ast.Base.Expresiones.Operaciones.binarias.arismeticos.Division;
+import archivos.ast.Base.Expresiones.Operaciones.binarias.OperacionBinaria;
+import archivos.ast.Base.Expresiones.Operaciones.binarias.arismeticos.Multiplicacion;
+import archivos.ast.Base.Expresiones.Operaciones.binarias.arismeticos.Resta;
+import archivos.ast.Base.Expresiones.Operaciones.binarias.arismeticos.Suma;
+import archivos.ast.Base.Expresiones.Operaciones.unarias.OperacionUnaria;
+import archivos.ast.Base.Expresiones.Operaciones.unarias.MenosUnario;
+import archivos.ast.Base.Expresiones.funcionesAdicionales.*;
+import archivos.ast.Base.Nodo;
+import archivos.ast.Base.Resultado;
+import java_cup.runtime.Symbol;
+import java.util.*;
+
+
+class MiParser;
+
+
+action code {:
+:};
+
+parser code
+{:
+    public void syntax_error(Symbol s) {
+        concat_rules("Error en la columna "+ (s.right+1)+ ". Valor simbolo '"
+        +s.value+"' . Simbolo n° "+s.sym+ " no reconocido." );}
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+            throw new Exception("Error en la columna "+ (s.right+1) +
+            ". Valor simbolo '"+s.value+"' . Simbolo n° "+s.sym+ "." ); }
+
+    public String reglas = "";
+
+    public void concat_rules(String regla){
+        reglas += regla + "\n";
+    }
+:};
+
+terminal SUMA,COMA, RESTA, MULT, DIV, PARENTESISO, PARENTESISC;
+terminal String ERROR,INT,FLOAT,POTENCIA,RAIZ,ABS;//,FACTORIAL;
+
+nonterminal Resultado resultado;
+nonterminal Expresion expresion, factor, menos_unario, termino,funcionesAdicionales;
+
+start with resultado;
+
+resultado ::= expresion:e
+    {:  concat_rules("REGLA 0: resultado --> expresion" + "\n  --> " + e.darResultado());
+    RESULT = new  Resultado("Resultado",e);
+    :};
+
+expresion ::=
+    expresion:e1 SUMA termino:e2 {:
+        concat_rules("REGLA 1.1: expresion --> expresion SUMA termino " + "\n  --> " + e1.darResultado() +" + "+ e2.darResultado());
+        RESULT = new Suma("Suma",e1,e2);
+    :}
+    |
+    expresion:e1 RESTA termino:e2 {:
+        concat_rules("REGLA 1.2: expresion --> expresion RESTA termino " + "\n  --> " + e1.darResultado() + " - " + e2.darResultado());
+        RESULT = new Resta("Resta",e1,e2);
+    :}
+    |
+    termino:t {:
+        concat_rules("REGLA 1.3: expresion --> termino " + "\n  --> " + t.darResultado());
+        RESULT = t ;
+    :};
+
+termino ::=
+    termino:t MULT menos_unario:mu {:
+        concat_rules("REGLA 2.1: termino --> termino MULT menor_unario " + "\n  --> " + t.darResultado() + " * " + mu.darResultado());
+        RESULT = new Multiplicacion("Multiplicacion",t,mu);
+    :}
+    |
+    termino:t DIV menos_unario:mu {:
+        concat_rules("REGLA 2.2: termino --> termino DIV menor_unario " + "\n  --> " + t.darResultado() + " / " + mu.darResultado());
+        RESULT = new Division("Division",t,mu);
+    :}
+    |
+    menos_unario:mu {:
+        concat_rules("REGLA 2.3: termino --> menor_unario " + "\n  --> " + mu.darResultado());
+        RESULT = mu;
+    :};
+
+menos_unario ::=
+    RESTA menos_unario:mu {:
+        concat_rules("REGLA 3.1: menos_unario --> - menor_unario " + "\n  --> " + "-" +mu.darResultado());
+        RESULT = new MenosUnario("MenosUnario",mu);
+    :}
+    |
+    factor:f {:
+        concat_rules("REGLA 3.2: menos_unario --> factor " + "\n  --> " + f.darResultado());
+        RESULT = f;
+    :};
+
+factor ::=
+    INT:i {:
+        concat_rules("REGLA 4.1: factor --> INT " + "\n  --> " + i);
+        RESULT = new ConstanteEntera(i,"ConstanteEntera");
+    :}
+    |
+    FLOAT:f {:
+        concat_rules("REGLA 4.2: factor --> FLOAT " + "\n  --> " + f);
+        RESULT = new ConstanteFloat(f,"ConstanteFloat");
+    :}
+    |
+    PARENTESISO expresion:eo PARENTESISC {:
+        concat_rules("REGLA 4.3: factor --> PARENTESISO expresion PARENTESISC " + "\n  --> " + " ( " + eo.darResultado() + " ) ");
+        RESULT = eo;
+    :}
+    |
+    funcionesAdicionales:fa{:
+        concat_rules("REGLA 4.4: factor --> funcionesAdicionales " + "\n  --> "  + fa.darResultado());
+        RESULT = fa;
+    :}
+    ;
+
+funcionesAdicionales::=
+    ABS PARENTESISO expresion:e  PARENTESISC {:
+            concat_rules("REGLA 5.1: funcionesAdicionales --> ABS ( expresion )  " + "\n  --> "+"ABS("+e.darResultado()+")");
+            RESULT = new ABS("ABS",e);
+        :}
+    |
+    POTENCIA PARENTESISO expresion:e1 COMA expresion:e2 PARENTESISC {:
+        concat_rules("REGLA 5.2: funcionesAdicionales --> POTENCIA ( expresion, expresion )  "
+                        + "\n  --> "+"POTENCIA("+e1.darResultado()+","+e2.darResultado()+")");
+        RESULT = new POTENCIA("Potencia",e1,e2);
+    :}
+    |
+    RAIZ PARENTESISO expresion:e1 COMA expresion:e2 PARENTESISC {:
+        concat_rules("REGLA 5.3: funcionesAdicionales --> POTENCIA ( expresion, expresion )  "
+                    + "\n  --> "+"POTENCIA("+e1.darResultado()+","+e2.darResultado()+")");
+        RESULT = new RAIZ("Raiz",e1,e2);
+        :}
+        /*
+    |
+    FACTORIAL PARENTESISO expresion:e  PARENTESISC {:
+        concat_rules("REGLA 5.4: funcionesAdicionales --> FACTORIAL ( e )  " + "\n  --> "+"FACTORIAL( "+e.darResultado()+")");
+        RESULT = new FACTORIAL("FACTORIAL",e);
+       :}*/
+    ;

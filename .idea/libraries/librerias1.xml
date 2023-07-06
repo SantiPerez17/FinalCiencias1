@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="librerias1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/FinalCiencias1/out/production/FinalCiencias1/CalculadoraCiencias1/librerias/jflex-full-1.8.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/FinalCiencias1/out/production/FinalCiencias1/CalculadoraCiencias1/librerias/java-cup-11b-runtime.jar!/" />
+      <root url="jar://$PROJECT_DIR$/FinalCiencias1/out/production/FinalCiencias1/CalculadoraCiencias1/librerias/java-cup-11b.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
