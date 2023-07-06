@@ -4,7 +4,7 @@
 # Carpeta del final de la materia.
 Calculadora con ER y GLC para validaciones, y para muestra graphviz.
 Se utilizaron las librerias Jflex ( https://www.jflex.de/ ) para el analizador léxico y JCup para el analizador Sintactico.
-Se utilizó Graphviz para el armado del arbol AVL.
+Se utilizó Graphviz ( https://graphviz.org/ ) para el armado del arbol AVL.
 
 - Deteccion de tokens utilizando Expresiones Regulares.
 - Gramáticas libres de contexto para las reglas de la calculadora.
