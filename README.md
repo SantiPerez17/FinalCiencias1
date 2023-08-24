@@ -2,7 +2,7 @@
 
 ### Descripción
 
-Esta aplicación, denominada "Ciencias 1 - Calculadora", es una calculadora avanzada que es capaz de realizar operaciones aritméticas, junto con otras funciones adicionales. La aplicación utiliza análisis léxico y sintáctico para interpretar y procesar las operaciones proporcionadas por el usuario.
+Esta aplicación es una calculadora que es capaz de realizar operaciones aritméticas, junto con otras funciones adicionales. La aplicación utiliza análisis léxico y sintáctico para interpretar y procesar las operaciones proporcionadas por el usuario.
 
 ### Lexer (`MiLexico`)
 
